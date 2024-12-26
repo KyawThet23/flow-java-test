@@ -2,6 +2,7 @@ package com.example.application.views.channel;
 
 import com.example.application.chat.ChatService;
 import com.example.application.chat.Message;
+import com.example.application.views.lobby.LobbyView;
 import com.vaadin.flow.component.AttachEvent;
 import com.vaadin.flow.component.messages.MessageInput;
 import com.vaadin.flow.component.messages.MessageList;
@@ -38,11 +39,12 @@ public class ChannelView extends VerticalLayout
     }
 
     @Override
-    public void setParameter(BeforeEvent beforeEvent, String s) {
-        if (chatService.channel(channelId).isEmpty()){
-            throw new IllegalArgumentException("Invalid channel ID");
+    public void setParameter(BeforeEvent event, String channelId) {
+        if (chatService.channel(channelId).isEmpty()) {
+            event.forwardTo(LobbyView.class);
+        } else {
+            this.channelId = channelId;
         }
-        this.channelId = channelId;
     }
 
     private void sendMessage(String message) {
